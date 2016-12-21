@@ -12,32 +12,32 @@ are all the questions that are intended towards knowing the 'directions to a pla
 
 **Different forms of asking for directions**
 
-where is the noob hall
-where is noob hall is
-give me path to noob hall
-show me where is noob hall
-show me where noob hall is
-direct me to noob hall
-show me direction to noob hall
-path to noob hall
-find me noob hall
-which is noob hall
-find me the noob hall
-where is the noob hall
-where is the neeb hall
-where is xyz
-where is great wall of china
-where great wall of china is
-find me where great wall of china is
+* where is the noob hall
+* where is noob hall is
+* give me path to noob hall
+* show me where is noob hall
+* show me where noob hall is
+* direct me to noob hall
+* show me direction to noob hall
+* path to noob hall
+* find me noob hall
+* which is noob hall
+* find me the noob hall
+* where is the noob hall
+* where is the neeb hall
+* where is xyz
+* where is great wall of china
+* where great wall of china is
+* find me where great wall of china is
 
 **Invalid questions**
 
-is it noob hall
-what is noob hall
+* is it noob hall
+* what is noob hall
 
 **Partially valid questions that are more broken in terms of english. (In such cases we provide suggestions)**
 
-noob hall directions
+* noob hall directions
 
 This system is able to validate the questions as valid and invalid. And more than that it can extract the place being
 searched for.
