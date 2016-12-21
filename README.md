@@ -42,7 +42,7 @@ are all the questions that are intended towards knowing the 'directions to a pla
 This system is able to validate the questions as valid and invalid. And more than that it can extract the place being
 searched for.
 
-The test results are as follows:
+**Test results**
 
 https://gist.github.com/HarishAtGitHub/2ec08b6b773ff1655dafbeb201b6495e
 
@@ -71,7 +71,7 @@ This can be used as a plugin for alexa to understand complex calculations, as at
 
 ![screenshot1new](https://cloud.githubusercontent.com/assets/5524260/21380604/4c18bd1e-c70b-11e6-8469-0e6f93d94d64.png)
 
-**Test results **
+**Test results**
 
 https://gist.github.com/HarishAtGitHub/b92361b7e3cd9012e3e285aa9dd1135d
 
