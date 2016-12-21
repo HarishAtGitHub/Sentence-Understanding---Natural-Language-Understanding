@@ -1,6 +1,6 @@
 # Sentence-Understanding---Natural-Language-Understanding
 
-The aim of this project is to make the computer system capable of understanding commonly spoken language phrases.
+The aim of this project is to make the computer system capable of understanding commonly spoken language phrases with regard to questions asking for 'Directions' and 'Math calculations'.
 ____ 
 
 Direction Question Understander:
