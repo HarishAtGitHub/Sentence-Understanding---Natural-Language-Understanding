@@ -5,7 +5,7 @@ class Analyzer:
     def __init__(self, question):
         self.question = question
         self.question_processed_form = {
-            'category': None,
+            'category': question.category,
             'actual_question' : question.actual_question
         }
 
@@ -32,6 +32,9 @@ class Analyzer:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
             subject_phrase = ''.join(subject_phrase)
             self.question_processed_form['subject_phrase'] = subject_phrase
+            time_phrase = tree_iterator(tree, 'TIME_PHRASE').leaves()
+            time_phrase = ''.join(time_phrase)
+            self.question_processed_form['time_phrase'] = time_phrase
         return self.question_processed_form
 
     def where_handler(self):
