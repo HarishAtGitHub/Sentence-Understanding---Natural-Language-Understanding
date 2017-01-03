@@ -63,7 +63,7 @@ def understand(text):
     question = question_analyzer(text)
     analyzer = Analyzer(question)
     question_processed_form = analyzer.get_handler(question.category)()
-    print(question_processed_form)
+    #print(question_processed_form)
     return question_processed_form
 
 def tree_iterator(tree, label):
