@@ -2,57 +2,68 @@ import nltk
 from core.generic.question_category_dict import *
 
 class Analyzer:
+    def __init__(self, question):
+        self.question = question
+        self.question_processed_form = {
+            'category': None,
+            'actual_question' : question.actual_question
+        }
+
     def get_handler(self, handler_type):
         handler_name = '_'.join(handler_type.lower().split(' '))
         return getattr(self, handler_name + '_handler', None)
 
-    def what_handler(self, ):
-        pass
-
-    def when_handler(self):
-        pass
-
-    def where_handler(self):
-        pass
-
-    def why_handler(self):
-        pass
-
-    def who_handler(self):
-        pass
-
-    def boolean_handler(self):
-        pass
-
-    def count_hanlder(self):
-        pass
-
-def understand(text):
-    question = question_analyzer(text)
-    import os
-    grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars/generic_question', question.category)
-    with open(grammar_file, 'r') as file:
-        grammar_str = file.read()
-    question_processed_form = {
-        'category': None,
-        'subject_phrase': None,
-        'time_phrase': None,
-        'actual_question': text
-    }
-    if question.category == 'what':
-        grammar = nltk.PCFG.fromstring(grammar_str)
-        parser = nltk.ViterbiParser(grammar)
-        #parser.trace()
-        question_processed_form['category'] = question.category
-        trees = parser.parse(question.question_extract)
+    def what_handler(self):
+        print('what')
+        trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
             subject_phrase = ''.join(subject_phrase)
             time = tree_iterator(tree, 'TIME_PHRASE').leaves()
             time = ''.join(time)
-            question_processed_form['subject_phrase'] = subject_phrase
-            question_processed_form['time_phrase'] = time
+            self.question_processed_form['subject_phrase'] = subject_phrase
+            self.question_processed_form['time_phrase'] = time
+        return self.question_processed_form
 
+    def when_handler(self):
+        print('when')
+        trees = self.get_processed_trees()
+        for tree in trees:
+            subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
+            subject_phrase = ''.join(subject_phrase)
+            self.question_processed_form['subject_phrase'] = subject_phrase
+        return self.question_processed_form
+
+    def where_handler(self):
+        return self.question_processed_form
+
+    def why_handler(self):
+        return self.question_processed_form
+
+    def who_handler(self):
+        return self.question_processed_form
+
+    def boolean_handler(self):
+        return self.question_processed_form
+
+    def count_handler(self):
+        return self.question_processed_form
+
+    def get_processed_trees(self):
+        import os
+        grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars/generic_question', self.question.category)
+        with open(grammar_file, 'r') as file:
+            grammar_str = file.read()
+        grammar = nltk.PCFG.fromstring(grammar_str)
+        parser = nltk.ViterbiParser(grammar)
+        trees = parser.parse(self.question.question_extract)
+        return trees
+
+def understand(text):
+    question = question_analyzer(text)
+    analyzer = Analyzer(question)
+    question_processed_form = analyzer.get_handler(question.category)()
+    print(question_processed_form)
     return question_processed_form
 
 def tree_iterator(tree, label):
