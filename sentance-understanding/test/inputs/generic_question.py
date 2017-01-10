@@ -88,12 +88,12 @@ questions = {
         'question_extract' : 'will there be any sporting events'
     }
     ,
-    #'find a sporting event which i might like' : {
-    #    'category' : 'what',
-    #    'marker_value' : 'find',
-    #    'question_extract' : 'find a sporting event which i might like'
-    #}
-    #,
+    'find a sporting event which i might like' : {
+        'category' : 'other',
+        'marker_value' : 'other',
+        'question_extract' : 'find a sporting event which i might like'
+    }
+    ,
     'can i sign up for any sporting events' : {
         'category' : 'boolean',
         'marker_value' : 'can',

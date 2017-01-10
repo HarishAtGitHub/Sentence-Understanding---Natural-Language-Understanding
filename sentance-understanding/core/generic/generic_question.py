@@ -105,6 +105,9 @@ class Analyzer:
             if match_found:
                 return self.question_processed_form
 
+        if not match_found:
+            self.question_processed_form['subject_phrase'] = 'Sorry ! we were not able to understand your question'
+            return self.question_processed_form
 
     def get_processed_trees(self, grammar=None, trace= False):
         import os
