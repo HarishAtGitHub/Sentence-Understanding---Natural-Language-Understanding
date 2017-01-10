@@ -15,6 +15,7 @@ class Analyzer:
 
     def what_handler(self):
         print('what')
+        # TODO: FIXME: fix what grammar if and if not divider is there
         trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
@@ -44,21 +45,80 @@ class Analyzer:
         return self.question_processed_form
 
     def who_handler(self):
+        print('who')
+        trees = self.get_processed_trees()
+        for tree in trees:
+            subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
+            subject_phrase = ''.join(subject_phrase)
+            self.question_processed_form['subject_phrase'] = subject_phrase
+            time_phrase = tree_iterator(tree, 'TIME_PHRASE').leaves()
+            time_phrase = ''.join(time_phrase)
+            self.question_processed_form['time_phrase'] = time_phrase
+            verb_phrase = tree_iterator(tree, 'VERB_PHRASE').leaves()
+            verb_phrase = ''.join(verb_phrase)
+            self.question_processed_form['verb_phrase'] = verb_phrase
         return self.question_processed_form
 
     def boolean_handler(self):
+        print('boolean')
+        trees = self.get_processed_trees()
+        for tree in trees:
+            subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
+            subject_phrase = ''.join(subject_phrase)
+            self.question_processed_form['subject_phrase'] = subject_phrase
+            try:
+                time_phrase = tree_iterator(tree, 'TIME_PHRASE').leaves()
+                time_phrase = ''.join(time_phrase)
+                self.question_processed_form['time_phrase'] = time_phrase
+            except AttributeError as ae:
+                pass
+            #verb_phrase = tree_iterator(tree, 'VERB_PHRASE').leaves()
+            #verb_phrase = ''.join(verb_phrase)
+            #self.question_processed_form['verb_phrase'] = verb_phrase
         return self.question_processed_form
 
-    def count_handler(self):
+    def quantity_handler(self):
+        print('quantity')
+        trees = self.get_processed_trees()
+        for tree in trees:
+            subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
+            subject_phrase = ''.join(subject_phrase)
+            time = tree_iterator(tree, 'TIME_PHRASE').leaves()
+            time = ''.join(time)
+            self.question_processed_form['subject_phrase'] = subject_phrase
+            self.question_processed_form['time_phrase'] = time
         return self.question_processed_form
 
-    def get_processed_trees(self):
+    def other_handler(self):
+        print('other')
+        other_grammars = [('map.cfg', 'direction', 'LOCATION_NAME_TOTAL')]
+        for grammar in other_grammars:
+            trees = self.get_processed_trees(grammar=grammar[0])
+            match_found = False
+            for tree in trees:
+                match_found = True
+                subject_phrase = tree_iterator(tree, grammar[2]).leaves()
+                subject_phrase = ''.join(subject_phrase)
+                self.question_processed_form['subject_phrase'] = subject_phrase
+                self.question_processed_form['category'] = grammar[1]
+
+            if match_found:
+                return self.question_processed_form
+
+
+    def get_processed_trees(self, grammar=None, trace= False):
         import os
-        grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars/generic_question', self.question.category)
+        if not grammar:
+            grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars/generic_question', self.question.category)
+        else:
+            # do based on priority
+            # do map first
+            grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars', grammar)
         with open(grammar_file, 'r') as file:
             grammar_str = file.read()
         grammar = nltk.PCFG.fromstring(grammar_str)
         parser = nltk.ViterbiParser(grammar)
+        if trace: parser.trace()
         trees = parser.parse(self.question.question_extract)
         return trees
 
@@ -94,6 +154,11 @@ def question_analyzer(text):
             selected_category = question_category[selected_marker]
             question_extract = text[text.index(selected_marker):]
             break
+
+    if selected_category is None:
+        selected_marker = 'other'
+        selected_category = 'other'
+        question_extract = text
 
     from collections import namedtuple
     Question = namedtuple('Question', ['category', 'marker_value', 'question_extract','actual_question'])

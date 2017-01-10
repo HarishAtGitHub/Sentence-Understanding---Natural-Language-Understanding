@@ -34,9 +34,14 @@ questions = {
     }
     ,
     'where is the next sporting event' : {
-        'category' : 'where',
-        'marker_value' : 'where',
+        'category' : 'other',
+        'marker_value' : 'other',
         'question_extract' : 'where is the next sporting event'
+    },
+    'show me direction to noob hall' : {
+        'category' : 'other',
+        'marker_value' : 'other',
+        'question_extract' : 'show me direction to noob hall'
     }
     ,
     'who is playing in the next sporting event' : {
@@ -51,6 +56,12 @@ questions = {
         'question_extract' : 'are there any sporting events happening soon'
     }
     ,
+    'are there any assignments due next week' : {
+        'category' : 'boolean',
+        'marker_value' : 'are',
+        'question_extract' : 'are there any assignments due next week'
+    }
+    ,
     'what sporting event was last week' : {
         'category' : 'what',
         'marker_value' : 'what',
@@ -59,14 +70,14 @@ questions = {
         'time_phrase' : 'last week'
     }
     ,
-    'will there be any sporting events soon' : {
+    'will there be any sporting events happening soon' : {
         'category' : 'boolean',
         'marker_value' : 'will',
-        'question_extract' : 'will there be any sporting events soon'
+        'question_extract' : 'will there be any sporting events happening soon'
     }
     ,
     'how many sporting events are happening next week' : {
-        'category' : 'count',
+        'category' : 'quantity',
         'marker_value' : 'how many',
         'question_extract' : 'how many sporting events are happening next week'
     }
