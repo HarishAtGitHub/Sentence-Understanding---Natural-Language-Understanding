@@ -76,4 +76,11 @@ This can be used as a plugin for alexa to understand complex calculations, as at
 https://gist.github.com/HarishAtGitHub/b92361b7e3cd9012e3e285aa9dd1135d
 
 
+Generic Question Understander:
+===
+
+[Generic question understander](https://github.com/HarishAtGitHub/Sentence-Understanding---Natural-Language-Understanding/blob/master/sentance-understanding/core/generic/generic_question.py) is able to understand different variety of questions as seen in the test results [here](https://gist.github.com/HarishAtGitHub/10b50b177bc220365b932c995027bafa).
+
+
+
 
