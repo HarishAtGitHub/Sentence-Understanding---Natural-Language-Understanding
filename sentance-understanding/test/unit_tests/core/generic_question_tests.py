@@ -16,6 +16,7 @@ class GenericQuestionTest(unittest.TestCase):
         for question, result in questions.items():
             question_processed_form = test_file.understand(question)
             print(question_processed_form)
+            print('**********************************************************************')
             #if question_processed_form['category'] == 'what':
             #    print(question_processed_form)
             #    self.assertEqual(question_processed_form['category'], result['category'])
