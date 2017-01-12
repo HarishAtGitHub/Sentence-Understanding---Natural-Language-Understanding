@@ -14,7 +14,7 @@ class Analyzer:
         return getattr(self, handler_name + '_handler', None)
 
     def what_handler(self):
-        print('what')
+        #print('what')
         # TODO: FIXME: fix what grammar if and if not divider is there
         trees = self.get_processed_trees()
         for tree in trees:
@@ -27,7 +27,7 @@ class Analyzer:
         return self.question_processed_form
 
     def when_handler(self):
-        print('when')
+        #print('when')
         trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
@@ -45,7 +45,7 @@ class Analyzer:
         return self.question_processed_form
 
     def who_handler(self):
-        print('who')
+        #print('who')
         trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
@@ -60,7 +60,7 @@ class Analyzer:
         return self.question_processed_form
 
     def boolean_handler(self):
-        print('boolean')
+        #print('boolean')
         trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
@@ -78,7 +78,7 @@ class Analyzer:
         return self.question_processed_form
 
     def quantity_handler(self):
-        print('quantity')
+        #print('quantity')
         trees = self.get_processed_trees()
         for tree in trees:
             subject_phrase = tree_iterator(tree, 'SUBJECT_PHRASE').leaves()
@@ -90,7 +90,7 @@ class Analyzer:
         return self.question_processed_form
 
     def other_handler(self):
-        print('other')
+        #print('other')
         other_grammars = [('map.cfg', 'direction', 'LOCATION_NAME_TOTAL')]
         for grammar in other_grammars:
             trees = self.get_processed_trees(grammar=grammar[0])
