@@ -90,7 +90,7 @@ class Analyzer:
         return self.question_processed_form
 
     def other_handler(self):
-        #print('other')
+        print('other')
         other_grammars = [('map.cfg', 'direction', 'LOCATION_NAME_TOTAL')]
         for grammar in other_grammars:
             trees = self.get_processed_trees(grammar=grammar[0])
@@ -126,7 +126,7 @@ class Analyzer:
         return trees
 
 def understand(text):
-    question = question_analyzer(text)
+    question = question_analyzer(text.strip().lower())
     analyzer = Analyzer(question)
     question_processed_form = analyzer.get_handler(question.category)()
     #print(question_processed_form)
