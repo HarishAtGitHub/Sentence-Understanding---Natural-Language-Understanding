@@ -134,6 +134,7 @@ def understand(text):
     return question_processed_form
 
 def process_time_phrase(question_processed_form):
+    # TODO: Support all time phrases
     import time
     import arrow
     if 'time_phrase' in question_processed_form:
