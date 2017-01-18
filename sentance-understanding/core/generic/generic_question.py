@@ -130,7 +130,85 @@ def understand(text):
     analyzer = Analyzer(question)
     question_processed_form = analyzer.get_handler(question.category)()
     #print(question_processed_form)
+    process_time_phrase(question_processed_form)
     return question_processed_form
+
+def process_time_phrase(question_processed_form):
+    import time
+    import arrow
+    if 'time_phrase' in question_processed_form:
+        print(question_processed_form['time_phrase'])
+        time_phrase = question_processed_form['time_phrase']
+        if time_phrase.startswith('next'):
+            exact_time = time_phrase.replace('next', '').strip()
+            question_processed_form['time_phrase'] = process_time_word(exact_time, 1)
+        elif time_phrase.startswith('last'):
+            exact_time = time_phrase.replace('last', '').strip()
+            question_processed_form['time_phrase'] = process_time_word(exact_time, -1)
+        elif time_phrase.startswith('now'):
+            now = arrow.now().strftime('%x %H:%M:%S')
+            question_processed_form['time_phrase'] = now
+        elif time_phrase.startswith('today'):
+            today = time.strftime("%x")
+            question_processed_form['time_phrase'] = today
+        elif time_phrase.startswith('tomorrow'):
+            time = arrow.now().shift(days=1)
+            question_processed_form['time_phrase'] = time.datetime.strftime("%x")
+        elif time_phrase.startswith('day after tomorrow'):
+            time = arrow.now().shift(days=2)
+            question_processed_form['time_phrase'] = time.datetime.strftime("%x")
+        elif time_phrase.startswith('soon'):
+            now = arrow.now().strftime('%H:%M:%S')
+            future = arrow.now().shift(hours=4).strftime('%H:%M:%S')
+            question_processed_form['time_phrase'] = now + '-' + future
+
+def process_time_word(exact_time, indicator):
+        import arrow
+        timenow = arrow.now()
+        if exact_time == 'week':
+            if indicator == 1:
+                time = timenow.shift(weeks=1)
+                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+            elif indicator == -1:
+                time = timenow.shift(weeks=-1)
+                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+            return result
+
+        elif exact_time == 'month':
+            if indicator == 1:
+                time = timenow.shift(months=1)
+                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+            elif indicator == -1:
+                time = timenow.shift(months=-1)
+                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+            return result
+        elif exact_time == 'year':
+            if indicator == 1:
+                time = timenow.shift(years=1)
+                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+            elif indicator == -1:
+                time = timenow.shift(years=-1)
+                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+            return result
+        '''
+        elif exact_time == 'weekend':
+            if indicator == 1:
+
+            elif indicator == -1:
+        elif exact_time == 'morning':
+            if indicator == 1:
+
+            elif indicator == -1:
+        elif exact_time == 'afternoon':
+            if indicator == 1:
+
+            elif indicator == -1:
+
+        elif exact_time == 'night':
+            if indicator == 1:
+
+            elif indicator == -1:
+        '''
 
 def tree_iterator(tree, label):
     value = None
