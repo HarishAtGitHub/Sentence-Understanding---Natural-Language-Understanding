@@ -13,6 +13,41 @@ questions = {
         'subject_phrase' : 'sporting events',
         'time_phrase' : 'happening next week'
     },
+    'what sporting events are happening next month' : {
+        'category' : 'what',
+        'marker_value' : 'what',
+        'question_extract' : 'what sporting events are happening next month',
+        'subject_phrase' : 'sporting events',
+        'time_phrase' : 'next month'
+    },
+    'what sporting events are happening next year' : {
+        'category' : 'what',
+        'marker_value' : 'what',
+        'question_extract' : 'what sporting events are happening next year',
+        'subject_phrase' : 'sporting events',
+        'time_phrase' : 'next year'
+    },
+    'what sporting events were happening last week' : {
+        'category' : 'what',
+        'marker_value' : 'what',
+        'question_extract' : 'what sporting events were happening last week',
+        'subject_phrase' : 'sporting events',
+        'time_phrase' : 'last week'
+    },
+    'what sporting events were happening last month' : {
+        'category' : 'what',
+        'marker_value' : 'what',
+        'question_extract' : 'what sporting events were happening last month',
+        'subject_phrase' : 'sporting events',
+        'time_phrase' : 'last month'
+    },
+    'what sporting events were happening last year' : {
+        'category' : 'what',
+        'marker_value' : 'what',
+        'question_extract' : 'what sporting events were happening last year',
+        'subject_phrase' : 'sporting events',
+        'time_phrase' : 'last year'
+    },
     'what assignments are due next week' : {
         'category' : 'what',
         'marker_value' : 'what',

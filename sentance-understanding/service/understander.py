@@ -4,11 +4,14 @@ from flask import abort
 
 app = Flask(__name__)
 
-@app.route('/ml/api/v1.0/answer', methods=['GET'])
+API_PATH = '/ml/api/'
+API_VERSION = 'v1.0'
+
+@app.route(API_PATH + API_VERSION + '/answer', methods=['GET'])
 def get_status():
     return "Hello ! Answer service is Up. Do a POST request to same URL with body in the  json form {'text':'<text>'}"
 
-@app.route('/ml/api/v1.0/answer', methods=['POST'])
+@app.route(API_PATH + API_VERSION + '/answer', methods=['POST'])
 def get_answer():
     try:
         text = request.json['text']
@@ -31,4 +34,4 @@ def static_proxy(path):
   return app.send_static_file(path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

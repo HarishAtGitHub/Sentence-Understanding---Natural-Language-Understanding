@@ -137,59 +137,80 @@ def process_time_phrase(question_processed_form):
     # TODO: Support all time phrases
     import time
     import arrow
+    datetime_format = "%Y-%m-%d %H:%M:%S"
+    date_format = "%Y-%m-%d"
+    separator = '***'
     if 'time_phrase' in question_processed_form:
         print(question_processed_form['time_phrase'])
         time_phrase = question_processed_form['time_phrase']
         if time_phrase.startswith('next'):
             exact_time = time_phrase.replace('next', '').strip()
-            question_processed_form['time_phrase'] = process_time_word(exact_time, 1)
+            question_processed_form['time_phrase'] = process_time_word(exact_time, 1, datetime_format, date_format, separator)
         elif time_phrase.startswith('last'):
             exact_time = time_phrase.replace('last', '').strip()
-            question_processed_form['time_phrase'] = process_time_word(exact_time, -1)
+            question_processed_form['time_phrase'] = process_time_word(exact_time, -1, datetime_format, date_format, separator)
         elif time_phrase.startswith('now'):
-            now = arrow.now().strftime('%x %H:%M:%S')
+            now = arrow.now().strftime(datetime_format)
             question_processed_form['time_phrase'] = now
         elif time_phrase.startswith('today'):
-            today = time.strftime("%x")
-            question_processed_form['time_phrase'] = today
+            time = arrow.now()
+            question_processed_form['time_phrase'] = time.datetime.strftime(date_format) + ' 00:00:00' + separator + \
+                                                     time.datetime.strftime(date_format) + ' 23:59:59'
         elif time_phrase.startswith('tomorrow'):
             time = arrow.now().shift(days=1)
-            question_processed_form['time_phrase'] = time.datetime.strftime("%x")
+            question_processed_form['time_phrase'] = time.datetime.strftime(date_format) + ' 00:00:00' + separator +\
+                                                     time.datetime.strftime(date_format) + ' 23:59:59'
         elif time_phrase.startswith('day after tomorrow'):
             time = arrow.now().shift(days=2)
-            question_processed_form['time_phrase'] = time.datetime.strftime("%x")
+            question_processed_form['time_phrase'] = time.datetime.strftime(date_format) + ' 00:00:00' + separator + \
+                                                     time.datetime.strftime(date_format) + ' 23:59:59'
         elif time_phrase.startswith('soon'):
-            now = arrow.now().strftime('%H:%M:%S')
-            future = arrow.now().shift(hours=4).strftime('%H:%M:%S')
-            question_processed_form['time_phrase'] = now + '-' + future
+            now = arrow.now().strftime(datetime_format)
+            future = arrow.now().shift(hours=4).strftime(datetime_format)
+            question_processed_form['time_phrase'] = now + separator + future
 
-def process_time_word(exact_time, indicator):
+def process_time_word(exact_time, indicator, datetime_format, date_format, sep):
         import arrow
         timenow = arrow.now()
         if exact_time == 'week':
             if indicator == 1:
                 time = timenow.shift(weeks=1)
-                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+                weekday = time.weekday()
+                result = time.shift(days=-weekday).datetime.strftime(date_format) + ' 00:00:00' + sep +\
+                         time.shift(days=6-weekday).datetime.strftime(date_format) + ' 23:59:59'
             elif indicator == -1:
                 time = timenow.shift(weeks=-1)
-                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+                weekday = time.weekday()
+                result = time.shift(days=-weekday).datetime.strftime(date_format) + ' 00:00:00' + sep + \
+                         time.shift(days=6-weekday).datetime.strftime(date_format) + ' 23:59:59'
             return result
 
         elif exact_time == 'month':
+            import calendar
             if indicator == 1:
                 time = timenow.shift(months=1)
-                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+                month = time.month
+                year = time.year
+                day = time.day
+                days = calendar.monthrange(year,month)[1]
+                result = time.shift(days=-day+1).datetime.strftime(date_format) + ' 00:00:00' + sep + \
+                         time.shift(days=days-day).datetime.strftime(date_format) + ' 23:59:59'
             elif indicator == -1:
                 time = timenow.shift(months=-1)
-                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+                month = time.month
+                year = time.year
+                day = time.day
+                days = calendar.monthrange(year,month)[1]
+                result = time.shift(days=-day+1).datetime.strftime(date_format) + ' 00:00:00' + sep + \
+                         time.shift(days=days-day).datetime.strftime(date_format) + ' 23:59:59'
             return result
         elif exact_time == 'year':
             if indicator == 1:
-                time = timenow.shift(years=1)
-                result = timenow.datetime.strftime("%x") + '-' + time.datetime.strftime("%x")
+                year = timenow.year
+                result = str(year+1) + '-01-01 00:00:00' + sep + str(year+1) + '-12-31 23:59:59'
             elif indicator == -1:
-                time = timenow.shift(years=-1)
-                result = time.datetime.strftime("%x") + '-' + timenow.datetime.strftime("%x")
+                year = timenow.year
+                result = str(year-1) + '-01-01 00:00:00' + sep + str(year-1) + '-12-31 23:59:59'
             return result
         '''
         elif exact_time == 'weekend':
