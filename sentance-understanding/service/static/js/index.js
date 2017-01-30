@@ -45,13 +45,28 @@ recognition.onresult = function(event) {
 function analyse(text_input) {
     $.ajax({
        method: "POST",
-       url: "/ml/api/v1.0/answer",
-       data: JSON.stringify({ text: text_input }),
+       url: "/ml/api/v1.0/understand",
+       data: JSON.stringify({ text: text_input , query_type: "elastic"}),
        contentType: 'application/json',
        success: function(msg){
           console.log(msg);
           //jQuery('span#result').text(JSON.stringify(msg, null, '\t'));
           jQuery('textarea').text(JSON.stringify(msg, null, '\t'));
+          query(msg);
+       }
+    })
+}
+
+function query(query_json) {
+    $.ajax({
+       method: "POST",
+       url: "http://localhost:9200/_all/table1/_search?pretty=true",
+       data: JSON.stringify(query_json),
+       contentType: 'application/json',
+       success: function(msg){
+          console.log(msg);
+          //jQuery('span#result').text(JSON.stringify(msg, null, '\t'));
+          //jQuery('textarea').text(JSON.stringify(msg, null, '\t'));
        }
     })
 }

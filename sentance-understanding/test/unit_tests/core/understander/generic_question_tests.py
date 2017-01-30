@@ -1,6 +1,6 @@
 import unittest
 
-from core.generic import generic_question as test_file
+from core.understander.generic import generic_question as test_file
 from test.inputs.generic_question import *
 
 class GenericQuestionTest(unittest.TestCase):

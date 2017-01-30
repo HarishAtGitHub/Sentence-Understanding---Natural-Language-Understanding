@@ -1,5 +1,5 @@
 import nltk
-from core.generic.question_category_dict import *
+from core.understander.generic.question_category_dict import *
 
 class Analyzer:
     def __init__(self, question):
@@ -90,7 +90,7 @@ class Analyzer:
         return self.question_processed_form
 
     def other_handler(self):
-        print('other')
+        #print('other')
         other_grammars = [('map.cfg', 'direction', 'LOCATION_NAME_TOTAL')]
         for grammar in other_grammars:
             trees = self.get_processed_trees(grammar=grammar[0])
@@ -112,11 +112,11 @@ class Analyzer:
     def get_processed_trees(self, grammar=None, trace= False):
         import os
         if not grammar:
-            grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars/generic_question', self.question.category)
+            grammar_file = os.path.join(os.path.dirname(__file__), '../../../grammars/generic_question', self.question.category)
         else:
             # do based on priority
             # do map first
-            grammar_file = os.path.join(os.path.dirname(__file__), '../../grammars', grammar)
+            grammar_file = os.path.join(os.path.dirname(__file__), '../../../grammars', grammar)
         with open(grammar_file, 'r') as file:
             grammar_str = file.read()
         grammar = nltk.PCFG.fromstring(grammar_str)
@@ -129,19 +129,27 @@ def understand(text):
     question = question_analyzer(text.strip().lower())
     analyzer = Analyzer(question)
     question_processed_form = analyzer.get_handler(question.category)()
-    #print(question_processed_form)
     process_time_phrase(question_processed_form)
     return question_processed_form
 
+def get_query_from_sentance(text, query_type=None):
+    question_processed_form = understand(text)
+    from core.query.query_generator import QueryGenerator
+    if not query_type:
+        query_generator = QueryGenerator(query_type)
+    else:
+        query_generator = QueryGenerator("elastic")
+    query = query_generator.generate_query(question_processed_form)
+    return query
+
 def process_time_phrase(question_processed_form):
     # TODO: Support all time phrases
-    import time
     import arrow
     datetime_format = "%Y-%m-%d %H:%M:%S"
     date_format = "%Y-%m-%d"
     separator = '***'
     if 'time_phrase' in question_processed_form:
-        print(question_processed_form['time_phrase'])
+        #print(question_processed_form['time_phrase'])
         time_phrase = question_processed_form['time_phrase']
         if time_phrase.startswith('next'):
             exact_time = time_phrase.replace('next', '').strip()
@@ -151,7 +159,7 @@ def process_time_phrase(question_processed_form):
             question_processed_form['time_phrase'] = process_time_word(exact_time, -1, datetime_format, date_format, separator)
         elif time_phrase.startswith('now'):
             now = arrow.now().strftime(datetime_format)
-            question_processed_form['time_phrase'] = now
+            question_processed_form['time_phrase'] = now + separator + now
         elif time_phrase.startswith('today'):
             time = arrow.now()
             question_processed_form['time_phrase'] = time.datetime.strftime(date_format) + ' 00:00:00' + separator + \

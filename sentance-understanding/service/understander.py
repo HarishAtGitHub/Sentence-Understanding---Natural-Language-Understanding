@@ -1,27 +1,31 @@
 from flask import Flask, jsonify
-from flask import request
 from flask import abort
+from flask import request
 
 app = Flask(__name__)
 
 API_PATH = '/ml/api/'
 API_VERSION = 'v1.0'
 
-@app.route(API_PATH + API_VERSION + '/answer', methods=['GET'])
+@app.route(API_PATH + API_VERSION + '/understand', methods=['GET'])
 def get_status():
     return "Hello ! Answer service is Up. Do a POST request to same URL with body in the  json form {'text':'<text>'}"
 
-@app.route(API_PATH + API_VERSION + '/answer', methods=['POST'])
-def get_answer():
+@app.route(API_PATH + API_VERSION + '/understand', methods=['POST'])
+def understand():
     try:
         text = request.json['text']
-        return jsonify(process(text))
+        if 'query_type' in request.json:
+            query_type = request.json['query_type']
+        else:
+            query_type = None
+        return jsonify(get_query(text, query_type))
     except KeyError as ke:
         abort(417)
 
-def process(text):
-    from core.generic import generic_question
-    result = generic_question.understand(text)
+def get_query(text, query_type):
+    from core.understander.generic import generic_question
+    result = generic_question.get_query_from_sentance(text, query_type)
     return result
 
 @app.route('/')
