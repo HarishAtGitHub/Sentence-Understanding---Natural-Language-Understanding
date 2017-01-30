@@ -60,7 +60,7 @@ function analyse(text_input) {
 function query(query_json) {
     $.ajax({
        method: "POST",
-       url: "http://localhost:9200/_all/table1/_search?pretty=true",
+       url: "http://localhost:9200/db/_search?pretty=true",
        data: JSON.stringify(query_json),
        contentType: 'application/json',
        success: function(msg){
