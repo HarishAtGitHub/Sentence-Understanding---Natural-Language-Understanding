@@ -66,9 +66,32 @@ function query(query_json) {
        success: function(msg){
           console.log(msg);
           //jQuery('span#result').text(JSON.stringify(msg, null, '\t'));
-          //jQuery('textarea').text(JSON.stringify(msg, null, '\t'));
+          jQuery('textarea').text(JSON.stringify(msg["hits"], null, '\t'));
+          loadui(msg["hits"])
        }
     })
+}
+
+function loadui(content) {
+        console.log(content);
+        $.get('events_table.html', function (template) {
+             console.log(content)
+             var str = JSON.stringify(content);
+             str = str.replace(/_source/g, 'source');
+             str = str.replace(/_source/g, 'source');
+
+             object = JSON.parse(str);
+             console.log('*******************')
+             console.log(object)
+             var html = Mustache.to_html(template, object);
+             console.log(html);
+             $('#searchresult').html(html);
+             $('#myModal').modal('show');
+             $('.modal .modal-body').css('overflow-y', 'auto');
+             $('.modal .modal-body').css('max-height', $(window).height() * 0.7);
+             //$('div#noncriticaltransaction').html(html);
+        });
+
 }
 
 recognition.start();
